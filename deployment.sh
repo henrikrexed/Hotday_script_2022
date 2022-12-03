@@ -74,13 +74,9 @@ echo "Deploying Cert Manager ( for OpenTelemetry Operator)"
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.6.1/cert-manager.yaml
 # Wait for pod webhook started
 kubectl wait pod -l app.kubernetes.io/instance=cert-manager -n cert-manager --for=condition=Ready --timeout=2m
-# Deploy the opentelemetry operator
-echo "Deploying the OpenTelemetry Operator"
-kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
+kubectl rollout status deployment cert-manager-webhook -n cert-manager
 
-#Deploy the OpenTelemetry Collector
-echo "Deploying Otel Collector"
-kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/rbac.yaml
+#Modify local files
 sed -i "s,DT_TENANT_URL,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-manifest.yaml
 sed -i "s,DT_TOKEN,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-manifest.yaml
 sed -i "s,DT_TENANT_URL,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/01_collector/metrics/openTelemetry-manifest.yaml
@@ -93,10 +89,10 @@ sed -i "s,CLUSTER_ID_TOREPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/exercice/02_a
 sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-sidecar.yaml
 sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/openTelemetry-sidecar.yaml
 #wait for the opentelemtry operator webhook to start
-kubectl wait pod --namespace default -l app.kubernetes.io/name=opentelemetry-operator -n  opentelemetry-operator-system --for=condition=Ready --timeout=2m
 #Deploying the fluent operator
 echo "Deploying FluentOperator"
 helm install fluent-operator --create-namespace -n kubesphere-logging-system https://github.com/fluent/fluent-operator/releases/download/v1.0.0/fluent-operator.tgz
+
 
 #Deploy Dynatrace Operator
 kubectl create namespace dynatrace
@@ -112,6 +108,10 @@ echo "Deploying Kubecost"
 kubectl create namespace kubecost
 helm repo add kubecost https://kubecost.github.io/cost-analyzer/
 helm install kubecost kubecost/cost-analyzer --namespace kubecost --set kubecostToken="aGVucmlrLnJleGVkQGR5bmF0cmFjZS5jb20=xm343yadf98" --set serviceMonitor.enabled=true
+# Deploy the opentelemetry operator
+echo "Deploying the OpenTelemetry Operator"
+kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
+
 
 # Deploy the fluent agents
 sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," exercice/03_Fluent/cluster_output_http.yaml
@@ -120,14 +120,18 @@ sed -i "s,CLUSTER_ID_TO_REPLACE,$CLUSTERID," fluent/clusterfilter.yaml
 sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTERNAME," fluent/clusterfilter.yaml
 kubectl apply -f fluent/fluentbit_deployment.yaml  -n kubesphere-logging-system
 #Deploy demo Application
-echo "Deploying Hipstershop"
+kubectl wait pod --namespace default -l app.kubernetes.io/name=opentelemetry-operator -n  opentelemetry-operator-system --for=condition=Ready --timeout=2m
+
 kubectl create ns otel-demo
 kubectl label namespace otel-demo app=nodynatrace
 sed -i "s,VERSION_TO_REPLACE,$VERSION," kubernetes-manifests/K8sdemo.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-sidecar.yaml -n otel-demo
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/K8sdemo.yaml -n otel-demo
-
+echo "Deploying Otel Collector"
+kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/rbac.yaml
+kubectl apply -f kubernetes-manifests/openTelemetry-manifest.yaml
 #manage the hipster-shop namespace
+echo "Deployint application"
 kubectl create ns hipster-shop
 kubectl label namespace hipster-shop app=nodynatrace
 sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
