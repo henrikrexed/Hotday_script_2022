@@ -22,3 +22,5 @@ kubectl delete namespace dynatrace
 helm uninstall fluent-operator -n kubesphere-logging-system
 kubectl delete namespace kubesphere-logging-system
 kubectl delete -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.1/cert-manager.yaml
+
+rm -rf /home/dtu_training/Hotday_script_2022
