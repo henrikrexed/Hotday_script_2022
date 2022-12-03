@@ -35,11 +35,11 @@ while [ $# -gt 0 ]; do
   case "$1" in
   --environment-url)
     ENVIRONMENT_URL="$2"
-    shift 2
+   shift 2
     ;;
   --api-token)
     API_TOKEN="$2"
-    shift 2
+   shift 2
     ;;
   *)
     echo "Warning: skipping unsupported option: $1"
@@ -63,8 +63,8 @@ fi
 
 ################################################################################
 ### Clone repo
-HOME_SCRIPT_DIRECTORY=/home/dtu_training/hotdayscript
-echo "SCript folder is $HOME_SCRIPT_DIRECTORY"
+HOME_SCRIPT_DIRECTORY=/home/dtu_training/Hotday_script_2022
+echo "Script folder is $HOME_SCRIPT_DIRECTORY"
 
 CLUSTER_NAME="Hotday2023"
 VERSION=v1.0.0
