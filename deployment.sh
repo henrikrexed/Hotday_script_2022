@@ -71,7 +71,7 @@ VERSION=v1.0.0
 
 #### Deploy the cert-manager
 echo "Deploying Cert Manager ( for OpenTelemetry Operator)"
-kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.6.1/cert-manager.yaml
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.1/cert-manager.yaml
 # Wait for pod webhook started
 kubectl wait pod -l app.kubernetes.io/instance=cert-manager -n cert-manager --for=condition=Ready --timeout=2m
 kubectl rollout status deployment cert-manager-webhook -n cert-manager
@@ -100,42 +100,42 @@ kubectl -n dynatrace create secret generic dynakube --from-literal="apiToken=$AP
 kubectl apply -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes.yaml
 kubectl apply -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes-csi.yaml
 kubectl -n dynatrace wait pod --for=condition=ready --selector=app.kubernetes.io/name=dynatrace-operator,app.kubernetes.io/component=webhook --timeout=300s
-sed -i "s,TENANTURL_TOREPLACE,$DT_TENANT_URL," dynatrace/dynakube.yaml
-sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," dynatrace/dynakube.yaml
-kubectl apply -f dynatrace/dynakube.yaml
+sed -i "s,TENANTURL_TOREPLACE,$DT_TENANT_URL," $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
+sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
+kubectl apply -f $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 echo "Deploying Kubecost"
 # Deploy Kubecost
 kubectl create namespace kubecost
 helm repo add kubecost https://kubecost.github.io/cost-analyzer/
-helm install kubecost kubecost/cost-analyzer --namespace kubecost --set kubecostToken="aGVucmlrLnJleGVkQGR5bmF0cmFjZS5jb20=xm343yadf98" --set serviceMonitor.enabled=true
+helm install kubecost kubecost/cost-analyzer --namespace kubecost --set kubecostToken="aGVucmlrLnJleGVkQGR5bmF0cmFjZS5jb20=xm343yadf98"
 # Deploy the opentelemetry operator
 echo "Deploying the OpenTelemetry Operator"
 kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
 
 
 # Deploy the fluent agents
-sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," exercice/03_Fluent/cluster_output_http.yaml
-sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," exercice/03_Fluent/cluster_output_http.yaml
-sed -i "s,CLUSTER_ID_TO_REPLACE,$CLUSTERID," fluent/clusterfilter.yaml
-sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTERNAME," fluent/clusterfilter.yaml
-kubectl apply -f fluent/fluentbit_deployment.yaml  -n kubesphere-logging-system
+sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/cluster_output_http.yaml
+sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/cluster_output_http.yaml
+sed -i "s,CLUSTER_ID_TO_REPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/fluent/clusterfilter.yaml
+sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTERNAME," $HOME_SCRIPT_DIRECTORY/fluent/clusterfilter.yaml
+kubectl apply -f $HOME_SCRIPT_DIRECTORY/fluent/fluentbit_deployment.yaml  -n kubesphere-logging-system
 #Deploy demo Application
 kubectl wait pod --namespace default -l app.kubernetes.io/name=opentelemetry-operator -n  opentelemetry-operator-system --for=condition=Ready --timeout=2m
 
 kubectl create ns otel-demo
 kubectl label namespace otel-demo app=nodynatrace
-sed -i "s,VERSION_TO_REPLACE,$VERSION," kubernetes-manifests/K8sdemo.yaml
+sed -i "s,VERSION_TO_REPLACE,$VERSION," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/K8sdemo.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-sidecar.yaml -n otel-demo
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/K8sdemo.yaml -n otel-demo
 echo "Deploying Otel Collector"
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/rbac.yaml
-kubectl apply -f kubernetes-manifests/openTelemetry-manifest.yaml
+kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-manifest.yaml
 #manage the hipster-shop namespace
 echo "Deployint application"
 kubectl create ns hipster-shop
 kubectl label namespace hipster-shop app=nodynatrace
-sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
-sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
+sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
+sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
 # Echo environ*
 echo "========================================================"
 echo "Environment fully deployed "
