@@ -55,7 +55,7 @@ spec:
       logging:
         loglevel: debug
       otlphttp:
-        endpoint: https://DT_TENANT_URL/api/v2/otlp
+        endpoint: DT_TENANT_URL/api/v2/otlp
         headers:
           Authorization: "Api-Token DT_TOKEN"
 
@@ -63,8 +63,8 @@ spec:
          # optional - Dimensions specified here will be incluwded as a dimension on every exported metric
          #            unless that metric already has a dimension with the same key.
          # optional - prefix will be prepended to each metric name in prefix.name format
-         prefix: acereconnect
-         endpoint: https://DT_TENANT_URL/api/v2/metrics/ingest
+         prefix: hotday
+         endpoint: DT_TENANT_URL/api/v2/metrics/ingest
          # Token must at least have the Ingest metrics (metrics.ingest) permission
          api_token: "DT_TOKEN"
       otlp/spanmetrics:

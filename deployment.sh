@@ -59,7 +59,7 @@ if [ -z "$API_TOKEN" ]; then
 fi
 
 
-
+DT_HOST=$(echo $ENVIRONMENT_URL | grep -oP 'https://\K\S+')
 
 ################################################################################
 ### Clone repo
@@ -103,7 +103,7 @@ kubectl -n dynatrace create secret generic dynakube --from-literal="apiToken=$AP
 kubectl apply -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes.yaml
 kubectl apply -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes-csi.yaml
 kubectl -n dynatrace wait pod --for=condition=ready --selector=app.kubernetes.io/name=dynatrace-operator,app.kubernetes.io/component=webhook --timeout=300s
-sed -i "s,TENANTURL_TOREPLACE,$DT_TENANT_URL," $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
+sed -i "s,TENANTURL_TOREPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 echo "Deploying Kubecost"
@@ -118,7 +118,7 @@ kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releas
 
 # Deploy the fluent agents
 sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/cluster_output_http.yaml
-sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/cluster_output_http.yaml
+sed -i "s,TENANT_TO_REPLACE,$DT_HOST," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/cluster_output_http.yaml
 sed -i "s,CLUSTER_ID_TO_REPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/fluent/clusterfilter.yaml
 sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTERNAME," $HOME_SCRIPT_DIRECTORY/fluent/clusterfilter.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/fluent/fluentbit_deployment.yaml  -n kubesphere-logging-system

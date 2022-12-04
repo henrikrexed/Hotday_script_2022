@@ -37,7 +37,7 @@ spec:
         loglevel: debug
 
       otlphttp:
-        endpoint: https://DT_TENANT_URL/api/v2/otlp
+        endpoint: DT_TENANT_URL/api/v2/otlp
         headers:
           Authorization: "Api-Token DT_TOKEN"
 
