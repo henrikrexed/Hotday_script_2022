@@ -11,9 +11,7 @@ kubectl delete ns otel-demo
 
 kubectl delete -f $HOME_SCRIPT_DIRECTORY/fluent/fluentbit_deployment.yaml  -n kubesphere-logging-system
 
-
-helm uninstall --namespace opentelemetry-operator-system  opentelemetry-operator
-kubectl delete ns opentelemetry-operator-system
+kubectl delete -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
 
 kubectl delete -f dynatrace/dynakube.yaml
 kubectl delete -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes-csi.yaml
@@ -22,7 +20,6 @@ kubectl -n dynatrace delete secret  dynakube
 kubectl delete namespace dynatrace
 helm uninstall fluent-operator -n kubesphere-logging-system
 kubectl delete namespace kubesphere-logging-system
-helm uninstall cert-manager -n cert-manager
-kubectl delete -f kubectl delete -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.1/cert-manager.crds.yaml
-kubectl delete ns cert-manager
+kubectl delete -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
+
 rm -rf /home/dtu_training/Hotday_script_2022
