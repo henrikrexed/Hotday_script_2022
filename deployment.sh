@@ -77,6 +77,10 @@ sed -i "s,IP_TO_REPLACE,$IP," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrument
 
 #### Deploy the cert-manager
 echo "Deploying Cert Manager ( for OpenTelemetry Operator)"
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.1/cert-manager.crds.yaml
+helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --version v1.10.1
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.1/cert-manager.yaml
 # Wait for pod webhook started
 kubectl wait pod -l app.kubernetes.io/instance=cert-manager -n cert-manager --for=condition=Ready --timeout=2m
@@ -117,8 +121,10 @@ kubectl apply -f $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 echo "Deploying the OpenTelemetry Operator"
 echo "Wait for the certmanager"
 sleep 40
-kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
-
+helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
+helm repo update
+kubectl create ns opentelemetry-operator-system
+helm install --namespace opentelemetry-operator-system  opentelemetry-operator open-telemetry/opentelemetry-operator
 
 # Deploy the fluent agents
 sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/cluster_output_http.yaml
