@@ -69,6 +69,9 @@ echo "Script folder is $HOME_SCRIPT_DIRECTORY"
 CLUSTER_NAME="Hotday2023"
 VERSION=v1.0.0
 
+##Get IP adress of Traefik
+IP=$(kubectl get svc traefik -n kube-system -ojson | jq -j '.status.loadBalancer.ingress[].ip')
+
 #### Deploy the cert-manager
 echo "Deploying Cert Manager ( for OpenTelemetry Operator)"
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.1/cert-manager.yaml
