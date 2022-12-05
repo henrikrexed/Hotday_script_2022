@@ -131,6 +131,9 @@ kubectl wait pod --namespace default -l app.kubernetes.io/name=opentelemetry-ope
 
 kubectl create ns otel-demo
 kubectl label namespace otel-demo app=nodynatrace
+kubectl label namespace kubesphere-logging-system app=nodynatrace
+kubectl label namespace opentelemetry-operator-system app=nodynatrace
+kubectl label namespace default app=nodynatrace
 sed -i "s,VERSION_TO_REPLACE,$VERSION," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/K8sdemo.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-sidecar.yaml -n otel-demo
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/K8sdemo.yaml -n otel-demo
