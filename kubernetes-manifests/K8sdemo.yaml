@@ -654,7 +654,7 @@ spec:
             - name: LOCUST_USERS
               value: '10'
             - name: LOCUST_HOST
-              value: http://frontend
+              value: http://IP_TO_REPLACE
             - name: LOCUST_HEADLESS
               value: 'false'
             - name: LOCUST_AUTOSTART
