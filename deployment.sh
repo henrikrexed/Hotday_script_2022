@@ -105,6 +105,13 @@ kubectl create namespace dynatrace
 sed -i "s,DT_TENANT_URL,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME,"  $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 
+# Deploy the opentelemetry operator
+echo "Deploying the OpenTelemetry Operator"
+echo "Wait for the certmanager"
+sleep 40
+kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
+
+#Deploy Dynatrace operator
 kubectl -n dynatrace create secret generic dynakube --from-literal="apiToken=$API_TOKEN" --from-literal="dataIngestToken=$API_TOKEN"
 kubectl apply -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes.yaml
 kubectl apply -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes-csi.yaml
@@ -112,13 +119,6 @@ kubectl -n dynatrace wait pod --for=condition=ready --selector=app.kubernetes.io
 sed -i "s,TENANTURL_TOREPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
-
-# Deploy the opentelemetry operator
-echo "Deploying the OpenTelemetry Operator"
-echo "Wait for the certmanager"
-sleep 40
-kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
-
 
 # Deploy the fluent agents
 sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/cluster_output_http.yaml
