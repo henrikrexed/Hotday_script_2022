@@ -115,7 +115,7 @@ kubectl apply -f $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 
 # Deploy the opentelemetry operator
 echo "Deploying the OpenTelemetry Operator"
-echo "Wait for the certmanager "
+echo "Wait for the certmanager"
 sleep 40
 kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
 
