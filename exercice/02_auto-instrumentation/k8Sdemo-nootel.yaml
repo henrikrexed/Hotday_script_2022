@@ -229,18 +229,20 @@ spec:
       restartPolicy: Always
       containers:
         - name: k6load
-          image: hrexed/k6-onlineboutique:dtoutput
+          image: hrexed/k6-onlineboutique-host-header:dtoutput
           imagePullPolicy: Always
           args: ["-u", "50", "-d", "24h"]
           env:
             - name: FRONTEND_ADDR
               value: "frontend"
             - name: K6_DYNATRACE_URL
-              value: https://TENANT_TO_REPLACE
+              value: TENANT_TO_REPLACE
             - name: K6_DYNATRACE_INSECURE_SKIP_TLS_VERIFY
               value: "true"
             - name: K6_DYNATRACE_APITOKEN
               value: "API_TOKEN_TO_REPLACE"
+            - name: HOST_HEADER
+              value: "onlineboutique.perform.com"
           resources:
             requests:
               cpu: 300m
@@ -338,7 +340,23 @@ spec:
       port: 80
       targetPort: 8080
 ---
-
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: onlineboutique-ingress
+spec:
+  rules:
+    - host :  "onlineboutique.perform.com"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:

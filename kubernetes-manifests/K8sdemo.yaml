@@ -344,6 +344,23 @@ spec:
     - name: otlphttp
       port: 4318
 ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oteldemo-ingress
+spec:
+  rules:
+    - host :  "otel-demo.perform.com"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -602,7 +619,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
         - name: loadgeneratorservice
-          image: otel/demo:VERSION_TO_REPLACE-loadgenerator
+          image: hrexed/oteldemo:v1.0.0-loadgenerator-host-header
           imagePullPolicy: Always
           ports:
             - name: locust
@@ -646,6 +663,8 @@ spec:
               value: "python"
             - name: FRONTEND_ADDR
               value: "frontend:8080"
+            - name: ENV_HOST
+              value: "otel-demo.perform.com"
           resources:
             requests:
               cpu: 100m

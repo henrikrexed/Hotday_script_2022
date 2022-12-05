@@ -61,8 +61,8 @@ fi
 
 DT_HOST=$(echo $ENVIRONMENT_URL | grep -oP 'https://\K\S+')
 
-################################################################################
-### Clone repo
+
+
 HOME_SCRIPT_DIRECTORY=/home/dtu_training/Hotday_script_2022
 echo "Script folder is $HOME_SCRIPT_DIRECTORY"
 
