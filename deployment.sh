@@ -106,11 +106,7 @@ kubectl -n dynatrace wait pod --for=condition=ready --selector=app.kubernetes.io
 sed -i "s,TENANTURL_TOREPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
-echo "Deploying Kubecost"
-# Deploy Kubecost
-kubectl create namespace kubecost
-helm repo add kubecost https://kubecost.github.io/cost-analyzer/
-helm install kubecost kubecost/cost-analyzer --namespace kubecost --set kubecostToken="aGVucmlrLnJleGVkQGR5bmF0cmFjZS5jb20=xm343yadf98"
+
 # Deploy the opentelemetry operator
 echo "Deploying the OpenTelemetry Operator"
 kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml

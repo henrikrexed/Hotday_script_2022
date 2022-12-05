@@ -12,8 +12,7 @@ kubectl delete ns otel-demo
 kubectl delete -f $HOME_SCRIPT_DIRECTORY/fluent/fluentbit_deployment.yaml  -n kubesphere-logging-system
 
 kubectl delete -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml
-helm uninstall kubecost kubecost/cost-analyzer -n kubecost
-kubectl delete namespace kubecost
+
 kubectl delete -f dynatrace/dynakube.yaml
 kubectl delete -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes-csi.yaml
 kubectl delete -f https://github.com/Dynatrace/dynatrace-operator/releases/latest/download/kubernetes.yaml
