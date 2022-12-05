@@ -125,6 +125,7 @@ sed -i "s,CLUSTER_ID_TO_REPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/fluent/clust
 sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTERNAME," $HOME_SCRIPT_DIRECTORY/fluent/clusterfilter.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/fluent/fluentbit_deployment.yaml  -n kubesphere-logging-system
 #Deploy demo Application
+sleep 5
 kubectl wait pod --namespace default -l app.kubernetes.io/name=opentelemetry-operator -n  opentelemetry-operator-system --for=condition=Ready --timeout=2m
 
 kubectl create ns otel-demo
