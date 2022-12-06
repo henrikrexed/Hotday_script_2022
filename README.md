@@ -60,7 +60,7 @@ ENVIRONMENT_URL=<DT TENANT url without https>
 ## run the deployment script
 ```
 chmod 777 deployment.sh
-./deployment.sh --environment-url $ENVIRONMENT_URL --api-token $DATA_INGEST_TOKEN
+./deployment.sh --environment-url "$ENVIRONMENT_URL" --api-token "$DATA_INGEST_TOKEN"
 ```
 
 
