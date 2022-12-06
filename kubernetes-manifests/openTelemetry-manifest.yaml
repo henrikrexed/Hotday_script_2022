@@ -25,7 +25,7 @@ spec:
         send_batch_size : 800
 
       spanmetrics:
-        metrics_exporter: dynatrace
+        metrics_exporter: prometheus
 
       memory_limiter:
         check_interval: 1s
@@ -74,11 +74,11 @@ spec:
       pipelines:
         traces:
           receivers: [otlp]
-          processors: [memory_limiter,k8sattributes,spanmetrics,batch]
-          exporters: [otlphttp]
+          processors: [memory_limiter,batch]
+          exporters: [logging]
         metrics:
           receivers: [otlp]
-          processors: [memory_limiter,k8sattributes,batch]
+          processors: []
           exporters: [prometheus]
         metrics/spanmetrics:
           receivers: [otlp/spanmetrics]

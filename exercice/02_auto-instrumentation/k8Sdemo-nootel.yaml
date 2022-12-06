@@ -222,8 +222,6 @@ spec:
       labels:
         app: loadgenerator
         product: k6
-      annotations:
-        sidecar.opentelemetry.io/inject: "true"
     spec:
       terminationGracePeriodSeconds: 5
       restartPolicy: Always
