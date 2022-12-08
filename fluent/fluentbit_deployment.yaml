@@ -43,6 +43,9 @@ spec:
   filterSelector:
     matchLabels:
       fluentbit.fluent.io/enabled: "true"
+  parserSelector:
+    matchLabels:
+      fluentbit.fluent.io/enabled: "true"
   outputSelector:
     matchLabels:
       fluentbit.fluent.io/enabled: "true"
@@ -66,39 +69,6 @@ spec:
     dbSync: Normal
 ---
 apiVersion: fluentbit.fluent.io/v1alpha2
-kind: ClusterInput
-metadata:
-  name: kubelet
-  labels:
-    fluentbit.fluent.io/enabled: "true"
-    fluentbit.fluent.io/component: logging
-spec:
-  systemd:
-    tag: service.kubelet
-    path: /var/log/journal
-    db: /fluent-bit/tail/kubelet.db
-    dbSync: Normal
-    systemdFilter:
-      - _SYSTEMD_UNIT=kubelet.service
----
-apiVersion: fluentbit.fluent.io/v1alpha2
-kind: ClusterFilter
-metadata:
-  name: kubeletfilter
-  labels:
-    fluentbit.fluent.io/enabled: "true"
-    fluentbit.fluent.io/component: logging
-spec:
-  match: service.kubelet
-  filters:
-
-    - modify:
-        rules:
-          - rename:
-              message: content
-              log: content
----
-apiVersion: fluentbit.fluent.io/v1alpha2
 kind: ClusterOutput
 metadata:
   name: fluentd-stdout-kub
@@ -108,14 +78,3 @@ spec:
   stdout:
     format: json_stream
   match: kube.*
----
-apiVersion: fluentbit.fluent.io/v1alpha2
-kind: ClusterOutput
-metadata:
-  name: fluentd-stdout-kubelet
-  labels:
-    fluentbit.fluent.io/enabled: "true"
-spec:
-  stdout:
-    format: json_stream
-  match: service.kubelet
