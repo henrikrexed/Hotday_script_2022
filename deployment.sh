@@ -70,11 +70,20 @@ CLUSTER_NAME="Hotday2023"
 VERSION=v1.0.0
 
 ##Get IP adress of Traefik
-IP=$(kubectl get svc traefik -n kube-system -ojson | jq -j '.status.loadBalancer.ingress[].ip')
+
+
+
+kubectl apply -f $HOME_SCRIPT_DIRECTORY/traefic/traefic_deploy.yaml
+### get the ip adress of ingress ####
+IP=""
+while [ -z $IP ]; do
+  echo "Waiting for external IP"
+  IP=$(kubectl get svc traefik -n kube-system -ojson | jq -j '.status.loadBalancer.ingress[].ip')
+  [ -z "$IP" ] && sleep 10
+done
+echo 'Found external IP: '$IP
 sed -i "s,IP_TO_REPLACE,$IP," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/K8sdemo.yaml
 sed -i "s,IP_TO_REPLACE,$IP," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
-kubectl apply -f $HOME_SCRIPT_DIRECTORY/traefic/traefic_deploy.yaml
-
 #### Deploy the cert-manager
 echo "Deploying Cert Manager ( for OpenTelemetry Operator)"
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
