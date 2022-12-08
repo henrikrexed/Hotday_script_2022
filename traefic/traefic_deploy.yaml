@@ -13,7 +13,6 @@ metadata:
     helm.sh/chart: traefik-19.0.400
   name: traefik
   namespace: kube-system
-  resourceVersion: "659"
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
