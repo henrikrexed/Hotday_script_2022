@@ -84,6 +84,7 @@ done
 echo 'Found external IP: '$IP
 sed -i "s,IP_TO_REPLACE,$IP," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/K8sdemo.yaml
 sed -i "s,IP_TO_REPLACE,$IP," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
+sed -i "s,IP_TO_REPLACE,$IP," $HOME_SCRIPT_DIRECTORY/prometheus/loadgenerator.yaml
 #### Deploy the cert-manager
 echo "Deploying Cert Manager ( for OpenTelemetry Operator)"
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
@@ -155,6 +156,8 @@ kubectl create ns hipster-shop
 kubectl label namespace hipster-shop app=nodynatrace
 sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
 sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
+sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/prometheus/loadgenerator.yaml
+sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/prometheus/loadgenerator.yaml
 #Deploy the application for Prometheus
 echo "Deploying SampleBank"
 kubectl create ns samplebank
@@ -162,6 +165,7 @@ kubectl apply -f $HOME_SCRIPT_DIRECTORY/prometheus/mongo-deployment.yaml -n samp
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/prometheus/mongo-service.yaml -n samplebank
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/prometheus/app-deployment.yaml -n samplebank
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/prometheus/app-service.yaml -n samplebank
+kubectl apply -f $HOME_SCRIPT_DIRECTORY/prometheus/loadgenerator.yaml -n samplebank
 #Deploying Node exporter
 echo "Deploying Node exporter"
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts

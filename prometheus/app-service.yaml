@@ -9,10 +9,28 @@ metadata:
     io.kompose.service: app
   name: model-app
 spec:
-  type: NodePort
+  type: ClusterIp
   ports:
-    - name: "3000"
+    - name: grpc
       port: 3000
-      nodePort: 30002
+      targetPort: 3000
   selector:
     io.kompose.service: app
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: samplebank-ingress
+spec:
+  rules:
+    - host :  "samplebank.perform.com"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: model-app
+                port:
+                  number: 3000
+---

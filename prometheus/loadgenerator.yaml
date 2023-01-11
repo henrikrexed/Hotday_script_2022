@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k6loadgenerator
+  namespace: samplebank
+spec:
+  selector:
+    matchLabels:
+      app: loadgenerator
+      product: k6
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: loadgenerator
+        product: k6
+    spec:
+      terminationGracePeriodSeconds: 5
+      restartPolicy: Always
+      containers:
+        - name: k6load
+          image: hrexed/samplebank-loadtest:1.0-hostheader
+          imagePullPolicy: Always
+          args: ["-u", "5", "-d", "24h"]
+          env:
+            - name: FRONTEND_ADDR
+              value: "IP_TO_REPLACE"
+            - name: K6_DYNATRACE_URL
+              value: TENANT_TO_REPLACE
+            - name: K6_DYNATRACE_INSECURE_SKIP_TLS_VERIFY
+              value: "true"
+            - name: K6_DYNATRACE_APITOKEN
+              value: "API_TOKEN_TO_REPLACE"
+            - name: HOST_HEADER
+              value: "samplebank.perform.com"
+          resources:
+            requests:
+              cpu: 300m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
