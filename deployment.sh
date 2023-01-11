@@ -150,12 +150,24 @@ echo "Deploying Otel Collector"
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/rbac.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-manifest.yaml
 #manage the hipster-shop namespace
-echo "Deployint application"
+echo "Deploying application"
 kubectl create ns hipster-shop
 kubectl label namespace hipster-shop app=nodynatrace
 sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
 sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
-# Echo environ*
+#Deploy the application for Prometheus
+echo "Deploying SampleBank"
+kubectl create ns samplebank
+kubectl apply -f prometheus/mongo-deployment.yaml -n samplebank
+kubectl apply -f prometheus/mongo-service.yaml -n samplebank
+kubectl apply -f prometheus/app-deployment.yaml -n samplebank
+kubectl apply -f prometheus/app-service.yaml -n samplebank
+#Deploying Node exporter
+echo "Deploying Node exporter"
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus-node-exporter prometheus-community/prometheus-node-exporter
+# Echo environ
 echo "========================================================"
 echo "Environment fully deployed "
 echo "========================================================"
