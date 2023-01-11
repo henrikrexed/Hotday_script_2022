@@ -158,10 +158,10 @@ sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/02_a
 #Deploy the application for Prometheus
 echo "Deploying SampleBank"
 kubectl create ns samplebank
-kubectl apply -f prometheus/mongo-deployment.yaml -n samplebank
-kubectl apply -f prometheus/mongo-service.yaml -n samplebank
-kubectl apply -f prometheus/app-deployment.yaml -n samplebank
-kubectl apply -f prometheus/app-service.yaml -n samplebank
+kubectl apply -f $HOME_SCRIPT_DIRECTORY/prometheus/mongo-deployment.yaml -n samplebank
+kubectl apply -f $HOME_SCRIPT_DIRECTORY/prometheus/mongo-service.yaml -n samplebank
+kubectl apply -f $HOME_SCRIPT_DIRECTORY/prometheus/app-deployment.yaml -n samplebank
+kubectl apply -f $HOME_SCRIPT_DIRECTORY/prometheus/app-service.yaml -n samplebank
 #Deploying Node exporter
 echo "Deploying Node exporter"
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
