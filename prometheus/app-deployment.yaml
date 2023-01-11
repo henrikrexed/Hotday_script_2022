@@ -31,4 +31,3 @@ spec:
             - containerPort: 3000
           resources: {}
       restartPolicy: Always
-status: {}
