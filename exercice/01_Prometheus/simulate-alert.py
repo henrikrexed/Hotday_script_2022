@@ -9,8 +9,8 @@ def load_test(port, test_hostname):
   try:
     endpoint='/api/users'
     http_req = "http://" + test_hostname + ":" + str(port) + endpoint
-
-    rsp = requests.get(http_req)
+    Headers = {"Host" :  "samplebank.perform.com"}
+    rsp = requests.get(http_req,headers=Headers)
     if rsp.status_code != 200:
       print("Exception received while running the thread...." + str(e))
 
