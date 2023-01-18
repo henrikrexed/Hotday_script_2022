@@ -9,7 +9,6 @@ metadata:
     io.kompose.service: app
   name: model-app
 spec:
-  type: ClusterIp
   ports:
     - name: grpc
       port: 3000

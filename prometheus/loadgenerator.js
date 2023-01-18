@@ -54,9 +54,9 @@ export default function() {
 
 
     //Access users page
-    let res = http.get(`${baseurl}/api/users`);
+    res = http.get(`${baseurl}/api/users`);
 
-    let checkRes = check(res, { "status is 200": (r) => r.status === 200 });
+    checkRes = check(res, { "status is 200": (r) => r.status === 200 });
 
     // show the error per second in grafana
     if (checkRes === false ){
@@ -66,9 +66,8 @@ export default function() {
 
     //Access login page
 
-    let res = http.get(`${baseurl}/login`);
-
-    let checkRes = check(res, { "status is 200": (r) => r.status === 200 });
+    res = http.get(`${baseurl}/login`);
+    checkRes = check(res, { "status is 200": (r) => r.status === 200 });
 
     // show the error per second in grafana
     if (checkRes === false ){
