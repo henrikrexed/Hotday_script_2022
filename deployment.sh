@@ -83,7 +83,7 @@ while [ -z $IP ]; do
 done
 echo 'Found external IP: '$IP
 sed -i "s,IP_TO_REPLACE,$IP," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/K8sdemo.yaml
-sed -i "s,IP_TO_REPLACE,$IP," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
+sed -i "s,IP_TO_REPLACE,$IP," $HOME_SCRIPT_DIRECTORY/exercice/03_auto-instrumentation/k8Sdemo-nootel.yaml
 sed -i "s,IP_TO_REPLACE,$IP," $HOME_SCRIPT_DIRECTORY/prometheus/loadgenerator.yaml
 #### Deploy the cert-manager
 echo "Deploying Cert Manager ( for OpenTelemetry Operator)"
