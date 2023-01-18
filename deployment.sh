@@ -95,15 +95,15 @@ kubectl rollout status deployment cert-manager-webhook -n cert-manager
 #Modify local files
 sed -i "s,DT_TENANT_URL,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-manifest.yaml
 sed -i "s,DT_TOKEN,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-manifest.yaml
-sed -i "s,DT_TENANT_URL,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/01_collector/metrics/openTelemetry-manifest.yaml
-sed -i "s,DT_TOKEN,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/01_collector/metrics/openTelemetry-manifest.yaml
-sed -i "s,DT_TENANT_URL,$ENVIRONMENT_URL,"  $HOME_SCRIPT_DIRECTORY/exercice/01_collector/trace/openTelemetry-manifest.yaml
-sed -i "s,DT_TOKEN,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/01_collector/trace/openTelemetry-manifest.yaml
+sed -i "s,DT_TENANT_URL,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/02_collector/metrics/openTelemetry-manifest.yaml
+sed -i "s,DT_TOKEN,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/02_collector/metrics/openTelemetry-manifest.yaml
+sed -i "s,DT_TENANT_URL,$ENVIRONMENT_URL,"  $HOME_SCRIPT_DIRECTORY/exercice/02_collector/trace/openTelemetry-manifest.yaml
+sed -i "s,DT_TOKEN,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/02_collector/trace/openTelemetry-manifest.yaml
 CLUSTERID=$(kubectl get namespace kube-system -o jsonpath='{.metadata.uid}')
 sed -i "s,CLUSTER_ID_TOREPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-sidecar.yaml
-sed -i "s,CLUSTER_ID_TOREPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/openTelemetry-sidecar.yaml
+sed -i "s,CLUSTER_ID_TOREPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/exercice/03_auto-instrumentation/openTelemetry-sidecar.yaml
 sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-sidecar.yaml
-sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/openTelemetry-sidecar.yaml
+sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," $HOME_SCRIPT_DIRECTORY/exercice/03_auto-instrumentation/openTelemetry-sidecar.yaml
 #wait for the opentelemtry operator webhook to start
 #Deploying the fluent operator
 echo "Deploying FluentOperator"
@@ -131,10 +131,10 @@ sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTER_NAME," $HOME_SCRIPT_DIRECTORY/dynatra
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 
 # Deploy the fluent agents
-sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/cluster_output_http.yaml
-sed -i "s,TENANT_TO_REPLACE,$DT_HOST," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/cluster_output_http.yaml
-sed -i "s,CLUSTER_ID_TO_REPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/clusterfilter.yaml
-sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTERNAME," $HOME_SCRIPT_DIRECTORY/exercice/03_Fluent/clusterfilter.yaml
+sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/04_Fluent/cluster_output_http.yaml
+sed -i "s,TENANT_TO_REPLACE,$DT_HOST," $HOME_SCRIPT_DIRECTORY/exercice/04_Fluent/cluster_output_http.yaml
+sed -i "s,CLUSTER_ID_TO_REPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/exercice/04_Fluent/clusterfilter.yaml
+sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTERNAME," $HOME_SCRIPT_DIRECTORY/exercice/04_Fluent/clusterfilter.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/fluent/fluentbit_deployment.yaml  -n kubesphere-logging-system
 #Deploy demo Application
 kubectl wait pod --namespace default -l app.kubernetes.io/name=opentelemetry-operator -n  opentelemetry-operator-system --for=condition=Ready --timeout=2m
@@ -154,8 +154,8 @@ kubectl apply -f $HOME_SCRIPT_DIRECTORY/kubernetes-manifests/openTelemetry-manif
 echo "Deploying application"
 kubectl create ns hipster-shop
 kubectl label namespace hipster-shop app=nodynatrace
-sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
-sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/02_auto-instrumentation/k8Sdemo-nootel.yaml
+sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/03_auto-instrumentation/k8Sdemo-nootel.yaml
+sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/03_auto-instrumentation/k8Sdemo-nootel.yaml
 sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/prometheus/loadgenerator.yaml
 sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/prometheus/loadgenerator.yaml
 sed -i "s,TENANT_TO_REPLACE,$ENVIRONMENT_URL," $HOME_SCRIPT_DIRECTORY/exercice/01_Prometheus/loadgenerator.yaml
