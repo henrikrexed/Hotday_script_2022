@@ -35,7 +35,7 @@ spec:
               kubernetes_host: k8s.kubernetes_node
           - add:
               k8s.kubernetes.cluster.id: CLUSTER_ID_TOREPLACE
-              k8s.cluster.name: CLUSTER_NAME_TO_REPLACE
+              k8s.cluster.name: Hotday2023
     - nest:
         operation: nest
         wildcard:

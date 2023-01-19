@@ -10,4 +10,4 @@ spec:
       regex: ^.*\s+\[(?<timestamp>\d{2}\/[a-zA-Z]+\/\d{4}:\d{2}:\d{2}:\d{2}\s+\+\d+)\]\s+"(?<method>\w+)\s+(?<path>\S+)\s+(?<httpversion>[^"]+)"\s+(?<statuscode>\d+)\s+(?<bytes_content>\d+)\s+"-"\s+"-"\s+(?<number_of_requests_received_since_started>\d+)\s+"(?<ingress>[^"]+)"\s+"(?<url>[^"]+)"\s+(?<responsetime>\d+)ms$
       types: request_duration_in_ms:integer
       timeKey: timestamp
-      timeFormat: %d/%b/%Y:%H:%M:%S %z
+      timeFormat: "%d/%b/%Y:%H:%M:%S %z"
