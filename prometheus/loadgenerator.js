@@ -43,7 +43,7 @@ export default function() {
           timeout: 20000, // 20s timeout.
         });
     session.addHeader('Host', host_header);
-    let res = session.get(`${baseurl}/`);
+    let res = session.get(`/`);
     let checkRes = check(res, { "status is 200": (r) => r.status === 200 });
 
     // show the error per second in grafana
@@ -54,7 +54,7 @@ export default function() {
 
 
     //Access users page
-    res = http.get(`${baseurl}/api/users`);
+    res = http.get(`/api/users`);
 
     checkRes = check(res, { "status is 200": (r) => r.status === 200 });
 
@@ -66,7 +66,7 @@ export default function() {
 
     //Access login page
 
-    res = http.get(`${baseurl}/login`);
+    res = http.get(`/login`);
     checkRes = check(res, { "status is 200": (r) => r.status === 200 });
 
     // show the error per second in grafana
