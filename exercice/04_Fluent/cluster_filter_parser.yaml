@@ -11,3 +11,7 @@ spec:
     - parser:
         keyName: message
         parser: kubernetes-parser-traefik
+    - modify:
+        rules:
+          - add:
+              content: method path statuscode url ingress
