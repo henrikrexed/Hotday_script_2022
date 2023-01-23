@@ -342,6 +342,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: onlineboutique-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
 spec:
   rules:
     - host :  "onlineboutique.perform.com"

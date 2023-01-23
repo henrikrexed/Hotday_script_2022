@@ -348,6 +348,8 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: oteldemo-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
 spec:
   rules:
     - host :  "otel-demo.perform.com"

@@ -54,8 +54,17 @@ export default function() {
 
 
     //Access users page
-    res = http.get(`/api/users`);
+    res = session.get(`/api/users`);
+    checkRes = check(res, { "status is 200": (r) => r.status === 200 });
 
+    // show the error per second in grafana
+    if (checkRes === false ){
+        errors.add(1);
+    }
+    sleep(waittime[Math.floor(Math.random() * waittime.length)])
+
+    //register
+    res = session.get(`/register`);
     checkRes = check(res, { "status is 200": (r) => r.status === 200 });
 
     // show the error per second in grafana
@@ -66,7 +75,7 @@ export default function() {
 
     //Access login page
 
-    res = http.get(`/login`);
+    res = session.get(`/login`);
     checkRes = check(res, { "status is 200": (r) => r.status === 200 });
 
     // show the error per second in grafana
