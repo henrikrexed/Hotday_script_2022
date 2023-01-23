@@ -18,19 +18,13 @@ spec:
         protocols:
           grpc:
           http:
-      otlp/spanmetrics:
-        protocols:
-          grpc:
-            endpoint: "localhost:65535"
+
 
     processors:
       batch:
         send_batch_max_size: 1000
         timeout: 30s
         send_batch_size : 800
-
-      spanmetrics:
-        metrics_exporter: prometheus
 
       memory_limiter:
         check_interval: 1s
@@ -76,6 +70,7 @@ spec:
       prometheus:
         endpoint: "0.0.0.0:9090"
         namespace: default
+
     service:
       pipelines:
         traces:
@@ -86,6 +81,3 @@ spec:
           receivers: [otlp]
           processors: []
           exporters: [logging,prometheus]
-        metrics/spanmetrics:
-          receivers: [otlp/spanmetrics]
-          exporters: [otlp/spanmetrics]

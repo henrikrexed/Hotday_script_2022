@@ -134,8 +134,7 @@ kubectl apply -f $HOME_SCRIPT_DIRECTORY/dynatrace/dynakube.yaml
 # Deploy the fluent agents
 sed -i "s,API_TOKEN_TO_REPLACE,$API_TOKEN," $HOME_SCRIPT_DIRECTORY/exercice/04_Fluent/cluster_output_http.yaml
 sed -i "s,TENANT_TO_REPLACE,$DT_HOST," $HOME_SCRIPT_DIRECTORY/exercice/04_Fluent/cluster_output_http.yaml
-sed -i "s,CLUSTER_ID_TO_REPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/exercice/04_Fluent/clusterfilter.yaml
-sed -i "s,CLUSTER_NAME_TO_REPLACE,$CLUSTERNAME," $HOME_SCRIPT_DIRECTORY/exercice/04_Fluent/clusterfilter.yaml
+sed -i "s,CLUSTER_ID_TOREPLACE,$CLUSTERID," $HOME_SCRIPT_DIRECTORY/exercice/04_Fluent/clusterfilter.yaml
 kubectl apply -f $HOME_SCRIPT_DIRECTORY/fluent/fluentbit_deployment.yaml  -n kubesphere-logging-system
 #Deploy demo Application
 kubectl wait pod --namespace default -l app.kubernetes.io/name=opentelemetry-operator -n  opentelemetry-operator-system --for=condition=Ready --timeout=2m

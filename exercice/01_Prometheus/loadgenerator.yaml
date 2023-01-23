@@ -24,7 +24,7 @@ spec:
           args: ["-u", "100", "-d", "5m"]
           env:
             - name: FRONTEND_ADDR
-              value: "http://IP_TO_REPLACE"
+              value: "IP_TO_REPLACE"
             - name: K6_DYNATRACE_URL
               value: TENANT_TO_REPLACE
             - name: K6_DYNATRACE_INSECURE_SKIP_TLS_VERIFY
