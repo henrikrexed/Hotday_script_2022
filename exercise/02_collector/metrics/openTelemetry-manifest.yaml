@@ -75,7 +75,7 @@ spec:
       pipelines:
         traces:
           receivers: [otlp]
-          processors: [memory_limiter,k8sattributes,spanmetrics,batch]
+          processors: [memory_limiter,k8sattributes,batch]
           exporters: [otlphttp]
         metrics:
           receivers: [otlp]
